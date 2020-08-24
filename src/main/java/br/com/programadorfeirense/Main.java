@@ -1,36 +1,38 @@
 package br.com.programadorfeirense;
 
 import java.io.FileWriter;
+import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.io.FileUtils;
 
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+
+import br.com.programadorfeirense.factory.StockFactory;
+import br.com.programadorfeirense.model.Stock;
 
 public class Main {
 
 	public static void main(String[] args) {
-		String ticker = "petr4";
+		
 		WebClient client = new WebClient();
 		client.getOptions().setCssEnabled(false);
 		client.getOptions().setJavaScriptEnabled(false);
 		try {
-			String searchUrl = "https://www.fundamentus.com.br/detalhes.php?papel=" + ticker;
-			HtmlPage page = client.getPage(searchUrl);
-			DomNode label = page.querySelector(
-					"body > div.center > div.conteudo.clearfix > table:nth-child(4) > tbody > tr:nth-child(2) > td:nth-child(3) > span.txt");
-			DomNode value = page.querySelector(
-					"body > div.center > div.conteudo.clearfix > table:nth-child(4) > tbody > tr:nth-child(2) > td:nth-child(4) > span");
-
-			System.out.println(label.getTextContent());
-			System.out.println(value.getTextContent());
-
-			// salvando no CSV
+			List<String> tickers= FileUtils.readLines(FileUtils.getFile("ibovespa.txt"), "utf-8");
 			CSVPrinter printer = new CSVPrinter(new FileWriter("stocks.csv"),
-					CSVFormat.DEFAULT.withHeader("ticker", "P/L"));
-			printer.printRecord(ticker, value.getTextContent().replace(',', '.'));
+					CSVFormat.DEFAULT.withHeader("ticker", "P/L","DY","P/VPA","EV/EBITDA"));
+			for(String ticker:tickers) {
+				String searchUrl = "https://www.fundamentus.com.br/detalhes.php?papel=" + ticker;
+				HtmlPage page = client.getPage(searchUrl);
+				StockFactory factory=new StockFactory(page);
+				Stock stock=factory.buildStock(ticker);
+				// salvando no CSV
+				stock.print(printer);
+			}
+			
 			printer.close();
 
 		} catch (Exception e) {

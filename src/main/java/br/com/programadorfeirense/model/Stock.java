@@ -1,6 +1,9 @@
 package br.com.programadorfeirense.model;
 
+import java.io.IOException;
+
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
 /** Representa uma ação na bolsa. Usa indicadores fundamentalistas indicados por Tiago Reis. https://www.sunoresearch.com.br/artigos/os-indicadores-mais-importantes-em-uma-analise/*/
 public class Stock {
@@ -74,6 +77,10 @@ public class Stock {
 		line.append(CSVFormat.DEFAULT.getDelimiter());
 		line.append(evebitda);
 		return line.toString();
+	}
+	
+	public void print(CSVPrinter printer) throws IOException {
+		printer.printRecord(ticker,getPl(),getDy(),getPvpa(),getEvebitda());
 	}
 
 }
