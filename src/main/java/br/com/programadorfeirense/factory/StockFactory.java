@@ -1,7 +1,7 @@
 package br.com.programadorfeirense.factory;
 
-import com.gargoylesoftware.htmlunit.html.DomNode;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.htmlunit.html.DomNode;
+import org.htmlunit.html.HtmlPage;
 
 import br.com.programadorfeirense.model.Stock;
 
