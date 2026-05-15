@@ -8,12 +8,12 @@
   	<dependency>
   		<groupId>org.htmlunit</groupId>
   		<artifactId>htmlunit</artifactId>
-  		<version>4.10.0</version>
+  		<version>4.21.0</version>
   	</dependency>
   	<dependency>
   		<groupId>org.apache.commons</groupId>
   		<artifactId>commons-csv</artifactId>
-  		<version>1.8</version>
+  		<version>1.14.1</version>
   	</dependency>
   </dependencies>
 </project>

@@ -22,7 +22,7 @@ public class Main {
 		try {
 			List<String> tickers= FileUtils.readLines(FileUtils.getFile("ibovespa.txt"), "utf-8");
 			CSVPrinter printer = new CSVPrinter(new FileWriter("stocks.csv"),
-					CSVFormat.DEFAULT.withHeader("ticker", "P/L","DY","P/VPA","EV/EBITDA"));
+					CSVFormat.DEFAULT.builder().setHeader("ticker", "P/L","DY","P/VPA","EV/EBITDA").get());
 			for(String ticker:tickers) {
 				String searchUrl = "https://www.fundamentus.com.br/detalhes.php?papel=" + ticker;
 				HtmlPage page = client.getPage(searchUrl);
